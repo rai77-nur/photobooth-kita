@@ -139,10 +139,40 @@ function applyVideoFilter() {
 document.querySelectorAll(".template-button").forEach(button => {
     button.addEventListener("click", async function() {
         const templateName = this.dataset.template;
+        const targetCount = templateHoles[templateName];
+
+        // Kalau lagi di halaman hasil dan template baru butuh JUMLAH FOTO YANG BEDA
+        // dari yang sudah diambil, jangan langsung render (slot sisanya bakal kosong).
+        // Tawarkan foto ulang dengan jumlah yang sesuai template barunya.
+        if (resultPage.classList.contains("active") && targetCount && targetCount !== capturedPhotos.length) {
+            const mauFotoUlang = confirm(
+                `Frame "${this.querySelector("strong")?.textContent || templateName}" butuh ${targetCount} foto, kamu baru punya ${capturedPhotos.length}. Foto ulang sekarang?`
+            );
+            if (!mauFotoUlang) return;
+
+            selectedTemplate = templateName;
+            photoCount = targetCount;
+
+            document.querySelectorAll(".template-button").forEach(item => item.classList.remove("selected"));
+            document.querySelectorAll(`.template-button[data-template="${templateName}"]`).forEach(item => item.classList.add("selected"));
+
+            const countBtn = document.querySelector(`.photo-count[data-count="${targetCount}"]`);
+            if (countBtn) {
+                document.querySelectorAll(".photo-count").forEach(item => item.classList.remove("selected"));
+                countBtn.classList.add("selected");
+            }
+
+            capturedPhotos = [];
+            currentPhotoNumber.textContent = "1";
+            totalPhotoNumber.textContent = photoCount.toString();
+            showPage(cameraPage);
+            await startCamera();
+            return;
+        }
+
         selectedTemplate = templateName;
 
-        if (templateHoles[templateName]) {
-            const targetCount = templateHoles[templateName];
+        if (targetCount) {
             const countBtn = document.querySelector(`.photo-count[data-count="${targetCount}"]`);
             if (countBtn) countBtn.click();
         }
@@ -379,42 +409,48 @@ async function createFinalCanvas() {
     const HD = 4;
     const isCustom = selectedTemplate.startsWith("custom-");
 
-    if (isCustom) {
-        const fileName = selectedTemplate.replace("custom-", "") + ".png";
-        const customConfig = CUSTOM_TEMPLATES[selectedTemplate];
+    try {
+        if (isCustom) {
+            const fileName = selectedTemplate.replace("custom-", "") + ".png";
+            const customConfig = CUSTOM_TEMPLATES[selectedTemplate];
 
-        const frameImg = await loadImage(fileName);
+            const frameImg = await loadImage(fileName);
 
-        const canvasWidth = frameImg.naturalWidth ? frameImg.naturalWidth * (HD / 2) : 2400;
-        const canvasHeight = frameImg.naturalHeight ? frameImg.naturalHeight * (HD / 2) : 4266;
+            const canvasWidth = frameImg.naturalWidth ? frameImg.naturalWidth * (HD / 2) : 2400;
+            const canvasHeight = frameImg.naturalHeight ? frameImg.naturalHeight * (HD / 2) : 4266;
 
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
 
-        context.imageSmoothingEnabled = true;
-        context.imageSmoothingQuality = "high";
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.imageSmoothingEnabled = true;
+            context.imageSmoothingQuality = "high";
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        await drawCustomPhotosAsync(context, canvasWidth, canvasHeight, customConfig);
-        const transparentFrame = getTransparentFrameCanvas(frameImg, customConfig, canvasWidth, canvasHeight);
-        context.drawImage(transparentFrame, 0, 0, canvasWidth, canvasHeight);
-    } else {
-        const canvasWidth = 600 * HD; 
-        let canvasHeight;
-        if (photoCount === 3) canvasHeight = 1800 * HD;
-        else if (photoCount === 4) canvasHeight = 2200 * HD;
-        else canvasHeight = 2800 * HD; 
+            await drawCustomPhotosAsync(context, canvasWidth, canvasHeight, customConfig);
+            const transparentFrame = getTransparentFrameCanvas(frameImg, customConfig, canvasWidth, canvasHeight);
+            context.drawImage(transparentFrame, 0, 0, canvasWidth, canvasHeight);
+        } else {
+            const canvasWidth = 600 * HD;
+            let canvasHeight;
+            if (photoCount === 3) canvasHeight = 1800 * HD;
+            else if (photoCount === 4) canvasHeight = 2200 * HD;
+            else canvasHeight = 2800 * HD;
 
-        canvas.width = canvasWidth;
-        canvas.height = canvasHeight;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
 
-        context.imageSmoothingEnabled = true;
-        context.imageSmoothingQuality = "high";
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
+            context.imageSmoothingEnabled = true;
+            context.imageSmoothingQuality = "high";
+            context.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        drawBackground(context, canvasWidth, canvasHeight);
-        await drawStandardPhotosAsync(context, canvasWidth, canvasHeight, HD);
-        drawText(context, canvasWidth, canvasHeight, HD);
+            drawBackground(context, canvasWidth, canvasHeight);
+            await drawStandardPhotosAsync(context, canvasWidth, canvasHeight, HD);
+            drawText(context, canvasWidth, canvasHeight, HD);
+        }
+    } catch (error) {
+        console.error("Gagal membuat hasil foto:", error);
+        errorMessage.textContent = "Gagal memuat gambar frame \"" + selectedTemplate.replace("custom-", "") + "\". Pastikan file gambarnya ada, lalu coba pilih frame lain.";
+        errorModal.classList.remove("hidden");
     }
 }
 
@@ -483,33 +519,39 @@ function getTransparentFrameCanvas(frameImg, customConfig, canvasWidth, canvasHe
     const offCtx = offCanvas.getContext("2d");
 
     offCtx.drawImage(frameImg, 0, 0, canvasWidth, canvasHeight);
-    const imgData = offCtx.getImageData(0, 0, canvasWidth, canvasHeight);
-    const data = imgData.data;
+
+    // PENTING: lubang foto dipotong PERSIS mengikuti bentuk & rotasi slot yang sama
+    // dengan yang dipakai saat menggambar foto (drawCustomPhotosAsync), bukan lagi
+    // berdasar tebakan warna putih. Cara lama itu penyebab foto kepotong acak/ke-mix
+    // dengan gambar background frame, karena area "putih" di frame belum tentu cuma
+    // lubang foto (bisa kena border/elemen dekorasi lain yang kebetulan putih juga).
+    offCtx.globalCompositeOperation = "destination-out";
+    offCtx.fillStyle = "#000000";
 
     customConfig.slots.forEach(slot => {
-        const marginX = slot.angle ? (slot.h * 0.1) : 0; 
-        const marginY = slot.angle ? (slot.w * 0.1) : 0;
-        
-        const minX = Math.max(0, Math.floor((slot.x - marginX) * canvasWidth));
-        const minY = Math.max(0, Math.floor((slot.y - marginY) * canvasHeight));
-        const maxX = Math.min(canvasWidth, Math.ceil((slot.x + slot.w + marginX) * canvasWidth));
-        const maxY = Math.min(canvasHeight, Math.ceil((slot.y + slot.h + marginY) * canvasHeight));
+        const slotX = slot.x * canvasWidth;
+        const slotY = slot.y * canvasHeight;
+        const slotW = slot.w * canvasWidth;
+        const slotH = slot.h * canvasHeight;
 
-        for (let y = minY; y < maxY; y++) {
-            for (let x = minX; x < maxX; x++) {
-                const idx = (y * canvasWidth + x) * 4;
-                const r = data[idx];
-                const g = data[idx + 1];
-                const b = data[idx + 2];
-
-                if (r > 230 && g > 230 && b > 230) {
-                    data[idx + 3] = 0;
-                }
-            }
+        offCtx.save();
+        if (slot.shape === "ellipse") {
+            offCtx.beginPath();
+            offCtx.ellipse(slotX + slotW / 2, slotY + slotH / 2, slotW / 2, slotH / 2, 0, 0, Math.PI * 2);
+            offCtx.fill();
+        } else if (slot.angle) {
+            const centerX = slotX + slotW / 2;
+            const centerY = slotY + slotH / 2;
+            offCtx.translate(centerX, centerY);
+            offCtx.rotate((slot.angle * Math.PI) / 180);
+            offCtx.fillRect(-slotW / 2, -slotH / 2, slotW, slotH);
+        } else {
+            offCtx.fillRect(slotX, slotY, slotW, slotH);
         }
+        offCtx.restore();
     });
 
-    offCtx.putImageData(imgData, 0, 0);
+    offCtx.globalCompositeOperation = "source-over";
     return offCanvas;
 }
 
