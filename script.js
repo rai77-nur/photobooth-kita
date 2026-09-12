@@ -38,7 +38,7 @@ let torchSupported = false;
 let selectedFilter = "none";
 let selectedLens = "normal";
 
-// KOORDINAT PRESISI DISESUAIKAN DENGAN TEMPLATE
+// KOORDINAT PRESISI BINGKAI 7 DAN TEMPLATE LAINNYA
 const CUSTOM_TEMPLATES = {
     "custom-barcode-moments": { slots: [{ x: 0.307, y: 0.262, w: 0.393, h: 0.155, shape: "ellipse" }, { x: 0.311, y: 0.438, w: 0.390, h: 0.153, shape: "ellipse" }, { x: 0.317, y: 0.614, w: 0.385, h: 0.151, shape: "ellipse" }] },
     "custom-batik": { slots: [{ x: 0.405, y: 0.240, w: 0.530, h: 0.198, shape: "rect" }, { x: 0.405, y: 0.448, w: 0.530, h: 0.198, shape: "rect" }, { x: 0.405, y: 0.655, w: 0.530, h: 0.198, shape: "rect" }] },
