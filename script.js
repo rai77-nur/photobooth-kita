@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 /* =====================================================
-   RAI PHOTOBOOTH - ENGINE PRESISI FRAME CUSTOM PNG
+   RAI PHOTOBOOTH - FULL ENGINE (FRAME CUSTOM, FILTER, LENSA)
 ===================================================== */
 
 const landingPage = document.getElementById("landingPage");
@@ -44,72 +44,24 @@ let isCapturing = false;
 let flashEnabled = false;
 let torchSupported = false;
 let selectedFilter = "none";
+let selectedLens = "normal";
 
 /* =====================================================
    KONFIGURASI LUBANG FOTO SANGAT PRESISI UNTUK FRAME PNG
 ===================================================== */
 const CUSTOM_TEMPLATES = {
-    "custom-barcode-moments": {
-        slots: [
-            { x: 0.307, y: 0.262, w: 0.393, h: 0.155, shape: "ellipse" },
-            { x: 0.311, y: 0.438, w: 0.390, h: 0.153, shape: "ellipse" },
-            { x: 0.317, y: 0.614, w: 0.385, h: 0.151, shape: "ellipse" }
-        ]
-    },
-    "custom-batik": {
-        slots: [
-            { x: 0.405, y: 0.240, w: 0.530, h: 0.198, shape: "rect" },
-            { x: 0.405, y: 0.448, w: 0.530, h: 0.198, shape: "rect" },
-            { x: 0.405, y: 0.655, w: 0.530, h: 0.198, shape: "rect" }
-        ]
-    },
-    "custom-blok": {
-        slots: [
-            { x: 0.221, y: 0.102, w: 0.490, h: 0.193, angle: 8.95, shape: "rect" },
-            { x: 0.285, y: 0.407, w: 0.479, h: 0.187, angle: -2.88, shape: "rect" },
-            { x: 0.256, y: 0.704, w: 0.495, h: 0.194, angle: -13.47, shape: "rect" }
-        ]
-    },
-    "custom-cowgirl": {
-        slots: [
-            { x: 0.345, y: 0.320, w: 0.485, h: 0.182, shape: "rect" },
-            { x: 0.355, y: 0.520, w: 0.485, h: 0.182, shape: "rect" },
-            { x: 0.345, y: 0.725, w: 0.485, h: 0.182, shape: "rect" }
-        ]
-    },
-    "custom-gantungan": {
-        slots: [
-            { x: 0.170, y: 0.238, w: 0.345, h: 0.192, shape: "rect" },
-            { x: 0.170, y: 0.442, w: 0.345, h: 0.192, shape: "rect" },
-            { x: 0.170, y: 0.647, w: 0.345, h: 0.192, shape: "rect" }
-        ]
-    },
-    "custom-koran": {
-        slots: [
-            { x: 0.230, y: 0.015, w: 0.520, h: 0.220, shape: "rect" },
-            { x: 0.230, y: 0.248, w: 0.520, h: 0.220, shape: "rect" },
-            { x: 0.230, y: 0.485, w: 0.520, h: 0.220, shape: "rect" },
-            { x: 0.225, y: 0.730, w: 0.520, h: 0.220, shape: "rect" }
-        ]
-    },
-    "custom-simple": {
-        slots: [
-            { x: 0.375, y: 0.048, w: 0.290, h: 0.163, shape: "rect" },
-            { x: 0.375, y: 0.220, w: 0.290, h: 0.163, shape: "rect" },
-            { x: 0.375, y: 0.393, w: 0.290, h: 0.163, shape: "rect" },
-            { x: 0.375, y: 0.566, w: 0.290, h: 0.163, shape: "rect" }
-        ]
-    }
+    "custom-barcode-moments": { slots: [{ x: 0.307, y: 0.262, w: 0.393, h: 0.155, shape: "ellipse" }, { x: 0.311, y: 0.438, w: 0.390, h: 0.153, shape: "ellipse" }, { x: 0.317, y: 0.614, w: 0.385, h: 0.151, shape: "ellipse" }] },
+    "custom-batik": { slots: [{ x: 0.405, y: 0.240, w: 0.530, h: 0.198, shape: "rect" }, { x: 0.405, y: 0.448, w: 0.530, h: 0.198, shape: "rect" }, { x: 0.405, y: 0.655, w: 0.530, h: 0.198, shape: "rect" }] },
+    "custom-blok": { slots: [{ x: 0.221, y: 0.102, w: 0.490, h: 0.193, angle: 8.95, shape: "rect" }, { x: 0.285, y: 0.407, w: 0.479, h: 0.187, angle: -2.88, shape: "rect" }, { x: 0.256, y: 0.704, w: 0.495, h: 0.194, angle: -13.47, shape: "rect" }] },
+    "custom-cowgirl": { slots: [{ x: 0.345, y: 0.320, w: 0.485, h: 0.182, shape: "rect" }, { x: 0.355, y: 0.520, w: 0.485, h: 0.182, shape: "rect" }, { x: 0.345, y: 0.725, w: 0.485, h: 0.182, shape: "rect" }] },
+    "custom-gantungan": { slots: [{ x: 0.170, y: 0.238, w: 0.345, h: 0.192, shape: "rect" }, { x: 0.170, y: 0.442, w: 0.345, h: 0.192, shape: "rect" }, { x: 0.170, y: 0.647, w: 0.345, h: 0.192, shape: "rect" }] },
+    "custom-koran": { slots: [{ x: 0.230, y: 0.015, w: 0.520, h: 0.220, shape: "rect" }, { x: 0.230, y: 0.248, w: 0.520, h: 0.220, shape: "rect" }, { x: 0.230, y: 0.485, w: 0.520, h: 0.220, shape: "rect" }, { x: 0.225, y: 0.730, w: 0.520, h: 0.220, shape: "rect" }] },
+    "custom-simple": { slots: [{ x: 0.375, y: 0.048, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.220, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.393, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.566, w: 0.290, h: 0.163, shape: "rect" }] }
 };
 
 const templateHoles = {
-  "custom-barcode-moments": 3,
-  "custom-batik": 3,
-  "custom-blok": 3,
-  "custom-cowgirl": 3,
-  "custom-gantungan": 3,
-  "custom-koran": 4,
-  "custom-simple": 4
+  "custom-barcode-moments": 3, "custom-batik": 3, "custom-blok": 3, "custom-cowgirl": 3,
+  "custom-gantungan": 3, "custom-koran": 4, "custom-simple": 4
 };
 
 /* =====================================================
@@ -122,6 +74,15 @@ function showPage(page) {
 }
 
 startButton.addEventListener("click", () => showPage(setupPage));
+
+const lensButtons = document.querySelectorAll(".lens-option");
+lensButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        lensButtons.forEach(item => item.classList.remove("selected"));
+        button.classList.add("selected");
+        selectedLens = button.dataset.lens;
+    });
+});
 
 const timerCountButtons = document.querySelectorAll(".timer-count");
 timerCountButtons.forEach(button => {
@@ -152,9 +113,16 @@ filterButtons.forEach(button => {
 });
 
 function applyVideoFilter() {
-    cameraVideo.style.filter = (selectedFilter === "glow")
-        ? "brightness(1.06) contrast(1.04) saturate(1.15) blur(0.4px)"
-        : "none";
+    let filterString = "none";
+    switch (selectedFilter) {
+        case "glow": filterString = "brightness(1.06) contrast(1.04) saturate(1.15) blur(0.4px)"; break;
+        case "monochrome": filterString = "grayscale(100%) contrast(1.1)"; break;
+        case "retro": filterString = "sepia(0.6) contrast(1.1) brightness(0.9) saturate(1.2)"; break;
+        case "iceblue": filterString = "hue-rotate(10deg) saturate(0.9) brightness(1.05) contrast(1.05)"; break;
+        case "flagship": filterString = "contrast(1.2) saturate(1.25) brightness(1.05) drop-shadow(0 0 1px rgba(0,0,0,0.1))"; break;
+        default: filterString = "none";
+    }
+    cameraVideo.style.filter = filterString;
 }
 
 document.querySelectorAll(".template-button").forEach(button => {
@@ -179,7 +147,13 @@ document.querySelectorAll(".template-button").forEach(button => {
 
 continueButton.addEventListener("click", async () => {
     capturedPhotos = [];
-    currentFacingMode = "user"; 
+    
+    if (selectedLens === "ultrawide") {
+        currentFacingMode = "environment";
+    } else {
+        currentFacingMode = "user"; 
+    }
+
     totalPhotoNumber.textContent = photoCount.toString();
     currentPhotoNumber.textContent = "1";
     showPage(cameraPage);
@@ -192,14 +166,22 @@ continueButton.addEventListener("click", async () => {
 async function startCamera() {
     try {
         stopCamera();
+        
+        let videoConstraints = {
+            facingMode: { ideal: currentFacingMode },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+        };
+
+        if (selectedLens === "ultrawide") {
+            videoConstraints.zoom = { ideal: 0.5 };
+        }
+
         cameraStream = await navigator.mediaDevices.getUserMedia({
-            video: { 
-                facingMode: { ideal: currentFacingMode }, 
-                width: { ideal: 1280 }, 
-                height: { ideal: 720 } 
-            },
+            video: videoConstraints,
             audio: false
         });
+        
         cameraVideo.srcObject = cameraStream;
         applyVideoFilter();
         
@@ -346,15 +328,25 @@ function captureFrame() {
     canvas.width = cameraVideo.videoWidth;
     canvas.height = cameraVideo.videoHeight;
 
-    if (selectedFilter === "glow") {
-        context.filter = "brightness(1.06) contrast(1.04) saturate(1.15) blur(0.4px)";
+    let filterString = "none";
+    switch (selectedFilter) {
+        case "glow": filterString = "brightness(1.06) contrast(1.04) saturate(1.15) blur(0.4px)"; break;
+        case "monochrome": filterString = "grayscale(100%) contrast(1.1)"; break;
+        case "retro": filterString = "sepia(0.6) contrast(1.1) brightness(0.9) saturate(1.2)"; break;
+        case "iceblue": filterString = "hue-rotate(10deg) saturate(0.9) brightness(1.05) contrast(1.05)"; break;
+        case "flagship": filterString = "contrast(1.2) saturate(1.25) brightness(1.05)"; break;
+        default: filterString = "none";
     }
+    context.filter = filterString;
 
     if (isMirrored) {
         context.translate(canvas.width, 0);
         context.scale(-1, 1);
     }
     context.drawImage(cameraVideo, 0, 0, canvas.width, canvas.height);
+    
+    context.filter = "none"; 
+    
     return canvas.toDataURL("image/jpeg", 1.0);
 }
 
@@ -400,13 +392,8 @@ async function createFinalCanvas() {
         context.imageSmoothingQuality = "high";
         context.clearRect(0, 0, canvasWidth, canvasHeight);
 
-        // 1. Gambar Foto-Foto pada Posisi & Bentuk Slot Presisi
         await drawCustomPhotosAsync(context, canvasWidth, canvasHeight, customConfig);
-
-        // 2. Olah Frame PNG (Menghapus Area Putih Dalam Slot Agar Jadi Transparan)
         const transparentFrame = getTransparentFrameCanvas(frameImg, customConfig, canvasWidth, canvasHeight);
-
-        // 3. Timpa Frame & Ornamen di Atas Foto
         context.drawImage(transparentFrame, 0, 0, canvasWidth, canvasHeight);
     } else {
         const canvasWidth = 600 * HD; 
