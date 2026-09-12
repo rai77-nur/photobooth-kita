@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rai Photobooth</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">RAI <span>PHOTOBOOTH</span></div>
+  </nav>
+
+  <!-- 1. HALAMAN LANDING -->
+  <div id="landingPage" class="page active">
+    <div class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">CAPTURE YOUR MOMENT</p>
+        <h1>RAI <span>PHOTOBOOTH</span></h1>
+        <p class="hero-description">
+          Abadikan momen kamu langsung dari browser. Hasilnya kece, gampang dipake, dan pastinya gratis. Yuk cobain!
+        </p>
+        <button id="startButton" class="primary-button">
+          Mulai Foto <span>📸</span>
+        </button>
+      </div>
+      
+      <div class="hero-preview">
+         <div class="preview-card">
+             <div class="preview-title">CLASSIC STYLE</div>
+             <div class="preview-photo photo-one"></div>
+             <div class="preview-photo photo-two"></div>
+             <div class="preview-photo photo-three"></div>
+             <p>RAI PHOTOBOOTH</p>
+         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. HALAMAN SETUP -->
+  <div id="setupPage" class="page">
+    <div class="setup-container">
+      <button id="setupBackButton" class="back-button">← Kembali</button>
+
+      <div class="setup-header">
+        <h2>Atur Gaya Kamu</h2>
+        <p>Pilih pengaturan foto sesuka hati sebelum mulai jepret.</p>
+      </div>
+
+      <div class="option-section">
+        <h3>Waktu Hitung Mundur</h3>
+        <div class="photo-options">
+          <button class="option-button timer-count selected" data-time="3">
+            <strong>3</strong> <span>Detik</span>
+          </button>
+          <button class="option-button timer-count" data-time="5">
+            <strong>5</strong> <span>Detik</span>
+          </button>
+          <button class="option-button timer-count" data-time="7">
+            <strong>7</strong> <span>Detik</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="option-section">
+        <h3>Jumlah Foto</h3>
+        <div class="photo-options">
+          <button class="option-button photo-count selected" data-count="3">
+            <strong>3</strong> <span>Foto</span>
+          </button>
+          <button class="option-button photo-count" data-count="4">
+            <strong>4</strong> <span>Foto</span>
+          </button>
+          <button class="option-button photo-count" data-count="6">
+            <strong>6</strong> <span>Foto</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="option-section">
+        <h3>Filter Wajah</h3>
+        <div class="photo-options">
+          <button class="option-button filter-option selected" data-filter="none">
+            <strong>✨</strong> <span>Natural</span>
+          </button>
+          <button class="option-button filter-option" data-filter="glow">
+            <strong>💫</strong> <span>Glow</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="option-section">
+        <h3>Template Frame</h3>
+        <div class="template-options">
+          <!-- Template Bawaan -->
+          <button class="template-button selected" data-template="classic">
+            <div class="template-preview classic-preview">
+              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
+            </div>
+            <strong>Classic</strong>
+          </button>
+          <button class="template-button" data-template="minimal">
+            <div class="template-preview minimal-preview">
+              <i></i><i></i><i></i>
+            </div>
+            <strong>Minimal</strong>
+          </button>
+          <button class="template-button" data-template="retro">
+            <div class="template-preview retro-preview">
+              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
+            </div>
+            <strong>Retro</strong>
+          </button>
+          <button class="template-button" data-template="polaroid">
+            <div class="template-preview polaroid-preview">
+              <i></i>
+            </div>
+            <strong>Polaroid</strong>
+          </button>
+          <button class="template-button" data-template="dark">
+            <div class="template-preview dark-preview">
+              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
+            </div>
+            <strong>Dark</strong>
+          </button>
+          <button class="template-button" data-template="blush">
+            <div class="template-preview blush-preview">
+              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
+            </div>
+            <strong>Blush</strong>
+          </button>
+          <button class="template-button" data-template="sky">
+            <div class="template-preview sky-preview">
+              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
+            </div>
+            <strong>Sky</strong>
+          </button>
+          <button class="template-button" data-template="sage">
+            <div class="template-preview sage-preview">
+              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
+            </div>
+            <strong>Sage</strong>
+          </button>
+
+          <!-- 7 Template Custom PNG -->
+          <button class="template-button" data-template="custom-barcode-moments">
+            <div class="template-preview custom-preview" style="background-image: url('barcode-moments.png');"></div>
+            <strong>Barcode</strong>
+          </button>
+          <button class="template-button" data-template="custom-batik">
+            <div class="template-preview custom-preview" style="background-image: url('batik.png');"></div>
+            <strong>Batik</strong>
+          </button>
+          <button class="template-button" data-template="custom-blok">
+            <div class="template-preview custom-preview" style="background-image: url('blok.png');"></div>
+            <strong>Blok</strong>
+          </button>
+          <button class="template-button" data-template="custom-cowgirl">
+            <div class="template-preview custom-preview" style="background-image: url('cowgirl.png');"></div>
+            <strong>Cowgirl</strong>
+          </button>
+          <button class="template-button" data-template="custom-gantungan">
+            <div class="template-preview custom-preview" style="background-image: url('gantungan.png');"></div>
+            <strong>Gantungan</strong>
+          </button>
+          <button class="template-button" data-template="custom-koran">
+            <div class="template-preview custom-preview" style="background-image: url('koran.png');"></div>
+            <strong>Koran</strong>
+          </button>
+          <button class="template-button" data-template="custom-simple">
+            <div class="template-preview custom-preview" style="background-image: url('simple.png');"></div>
+            <strong>Simple</strong>
+          </button>
+        </div>
+      </div>
+
+      <button id="continueButton" class="primary-button full-button">Lanjut ke Kamera</button>
+    </div>
+  </div>
+
+  <!-- 3. HALAMAN KAMERA -->
+  <div id="cameraPage" class="page">
+    <div class="camera-container">
+      <div class="camera-topbar">
+        <button id="cameraBackButton" class="back-button" style="margin-bottom:0;">← Batal</button>
+        <div class="photo-progress">
+          Foto <strong id="currentPhotoNumber">1</strong> dari <strong id="totalPhotoNumber">3</strong>
+        </div>
+      </div>
+
+      <div class="camera-wrapper">
+        <video id="cameraVideo" autoplay playsinline></video>
+        <div id="countdown" class="countdown hidden">3</div>
+        <div id="flash" class="flash"></div>
+      </div>
+
+      <div class="camera-controls">
+        <button id="flipButton" class="control-button">
+          🔄 <span>Flip</span>
+        </button>
+        <button id="captureButton" class="capture-button">
+          <span></span>
+        </button>
+        <button id="flashButton" class="control-button">
+          ⚡ <span>Flash</span>
+        </button>
+      </div>
+
+      <p id="cameraMessage" class="camera-message">Pastikan wajah berada di dalam frame.</p>
+    </div>
+  </div>
+
+  <!-- 4. HALAMAN HASIL -->
+  <div id="resultPage" class="page">
+    <div class="result-container">
+      <div class="result-header">
+        <h2>Ini Hasilnya!</h2>
+        <p>Pilih gaya frame di bawah untuk mengganti tampilan tanpa harus foto ulang.</p>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="resultCanvas"></canvas>
+      </div>
+
+      <!-- FITUR GANTI GAYA FRAME -->
+      <div class="result-template-selector">
+        <h3>Ubah Gaya Frame:</h3>
+        <div class="template-options result-templates">
+          <button class="template-button selected" data-template="classic">
+            <div class="template-preview classic-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
+            <strong>Classic</strong>
+          </button>
+          <button class="template-button" data-template="minimal">
+            <div class="template-preview minimal-preview"><i></i><i></i><i></i></div>
+            <strong>Minimal</strong>
+          </button>
+          <button class="template-button" data-template="retro">
+            <div class="template-preview retro-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
+            <strong>Retro</strong>
+          </button>
+          <button class="template-button" data-template="polaroid">
+            <div class="template-preview polaroid-preview"><i></i></div>
+            <strong>Polaroid</strong>
+          </button>
+          <button class="template-button" data-template="dark">
+            <div class="template-preview dark-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
+            <strong>Dark</strong>
+          </button>
+          <button class="template-button" data-template="blush">
+            <div class="template-preview blush-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
+            <strong>Blush</strong>
+          </button>
+          <button class="template-button" data-template="sky">
+            <div class="template-preview sky-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
+            <strong>Sky</strong>
+          </button>
+          <button class="template-button" data-template="sage">
+            <div class="template-preview sage-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
+            <strong>Sage</strong>
+          </button>
+
+          <button class="template-button" data-template="custom-barcode-moments">
+            <div class="template-preview custom-preview" style="background-image: url('barcode-moments.png');"></div>
+            <strong>Barcode</strong>
+          </button>
+          <button class="template-button" data-template="custom-batik">
+            <div class="template-preview custom-preview" style="background-image: url('batik.png');"></div>
+            <strong>Batik</strong>
+          </button>
+          <button class="template-button" data-template="custom-blok">
+            <div class="template-preview custom-preview" style="background-image: url('blok.png');"></div>
+            <strong>Blok</strong>
+          </button>
+          <button class="template-button" data-template="custom-cowgirl">
+            <div class="template-preview custom-preview" style="background-image: url('cowgirl.png');"></div>
+            <strong>Cowgirl</strong>
+          </button>
+          <button class="template-button" data-template="custom-gantungan">
+            <div class="template-preview custom-preview" style="background-image: url('gantungan.png');"></div>
+            <strong>Gantungan</strong>
+          </button>
+          <button class="template-button" data-template="custom-koran">
+            <div class="template-preview custom-preview" style="background-image: url('koran.png');"></div>
+            <strong>Koran</strong>
+          </button>
+          <button class="template-button" data-template="custom-simple">
+            <div class="template-preview custom-preview" style="background-image: url('simple.png');"></div>
+            <strong>Simple</strong>
+          </button>
+        </div>
+      </div>
+
+      <div class="result-buttons">
+        <button id="downloadButton" class="primary-button">Download Foto (4K HD)</button>
+        <button id="retakeButton" class="secondary-button">Foto Ulang</button>
+        <button id="homeButton" class="text-button">Kembali ke Awal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ERROR MODAL -->
+  <div id="errorModal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-icon">!</div>
+      <h2>Oops, Ada Masalah</h2>
+      <p id="errorMessage">Izin kamera ditolak atau kamera error.</p>
+      <button id="closeErrorButton" class="primary-button">Tutup</button>
+    </div>
+  </div>
+
+  <audio id="shutterSound" src="https://www.soundjay.com/mechanical/sounds/camera-shutter-click-01.mp3" preload="auto"></audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
