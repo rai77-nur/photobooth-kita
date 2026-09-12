@@ -1,10 +1,8 @@
 // @ts-nocheck
-
 const landingPage = document.getElementById("landingPage");
 const setupPage = document.getElementById("setupPage");
 const cameraPage = document.getElementById("cameraPage");
 const resultPage = document.getElementById("resultPage");
-
 const startButton = document.getElementById("startButton");
 const continueButton = document.getElementById("continueButton");
 const setupBackButton = document.getElementById("setupBackButton");
@@ -12,11 +10,9 @@ const cameraBackButton = document.getElementById("cameraBackButton");
 const captureButton = document.getElementById("captureButton");
 const flipButton = document.getElementById("flipButton");
 const flashButton = document.getElementById("flashButton");
-
 const cameraVideo = document.getElementById("cameraVideo");
 const countdownElement = document.getElementById("countdown");
 const flashElement = document.getElementById("flash");
-
 const currentPhotoNumber = document.getElementById("currentPhotoNumber");
 const totalPhotoNumber = document.getElementById("totalPhotoNumber");
 const cameraMessage = document.getElementById("cameraMessage");
@@ -52,18 +48,26 @@ const CUSTOM_TEMPLATES = {
     "custom-simple": { slots: [{ x: 0.375, y: 0.048, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.220, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.393, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.566, w: 0.290, h: 0.163, shape: "rect" }] },
     "custom-baby-girl": { slots: [{ x: 0.48, y: 0.28, w: 0.38, h: 0.18 }, { x: 0.48, y: 0.48, w: 0.38, h: 0.18 }, { x: 0.48, y: 0.68, w: 0.38, h: 0.18 }] },
     "custom-bingkai": { slots: [{ x: 0.25, y: 0.18, w: 0.50, h: 0.20, angle: -5 }, { x: 0.25, y: 0.42, w: 0.50, h: 0.20, angle: 2 }, { x: 0.25, y: 0.66, w: 0.50, h: 0.20, angle: -3 }] },
-    "custom-bingkai6": { slots: [{ x: 0.05, y: 0.05, w: 0.35, h: 0.25, angle: -2 }, { x: 0.55, y: 0.05, w: 0.40, h: 0.25, angle: 2 }, { x: 0.25, y: 0.32, w: 0.45, h: 0.30 }, { x: 0.05, y: 0.70, w: 0.40, h: 0.25, angle: -5 }, { x: 0.55, y: 0.65, w: 0.40, h: 0.30, angle: 5 }] },
+    "custom-bingkai6": { slots: [ 
+        { x: 0.02, y: 0.02, w: 0.38, h: 0.22, angle: -3 }, { x: 0.53, y: 0.04, w: 0.43, h: 0.24, angle: 2 },
+        { x: -0.02, y: 0.48, w: 0.30, h: 0.22, angle: -3 }, { x: 0.23, y: 0.28, w: 0.48, h: 0.28, angle: 0 },
+        { x: 0.02, y: 0.72, w: 0.38, h: 0.23, angle: -4 }, { x: 0.50, y: 0.58, w: 0.45, h: 0.32, angle: 4 }
+    ]},
     "custom-camera": { slots: [{ x: 0.18, y: 0.10, w: 0.65, h: 0.22 }, { x: 0.18, y: 0.38, w: 0.65, h: 0.22 }, { x: 0.18, y: 0.68, w: 0.65, h: 0.22 }] },
     "custom-camera2": { slots: [{ x: 0.28, y: 0.30, w: 0.44, h: 0.18 }, { x: 0.28, y: 0.50, w: 0.44, h: 0.18 }, { x: 0.28, y: 0.70, w: 0.44, h: 0.18 }] },
     "custom-memory-book": { slots: [{ x: 0.22, y: 0.08, w: 0.58, h: 0.24, angle: -12 }, { x: 0.20, y: 0.38, w: 0.58, h: 0.24, angle: 2 }, { x: 0.20, y: 0.68, w: 0.58, h: 0.24, angle: -10 }] },
-    "custom-bingkai7": { slots: [{ x: 0.05, y: 0.25, w: 0.40, h: 0.25, angle: -15 }, { x: 0.05, y: 0.70, w: 0.40, h: 0.25, angle: -15 }, { x: 0.60, y: 0.08, w: 0.32, h: 0.20 }, { x: 0.60, y: 0.32, w: 0.32, h: 0.20 }, { x: 0.60, y: 0.55, w: 0.32, h: 0.20 }] }
+    "custom-bingkai7": { slots: [ 
+        { x: 0.05, y: 0.02, w: 0.40, h: 0.22, angle: -20 }, { x: 0.08, y: 0.35, w: 0.40, h: 0.22, angle: 20 },
+        { x: 0.05, y: 0.70, w: 0.40, h: 0.22, angle: -20 }, { x: 0.61, y: 0.02, w: 0.32, h: 0.18 },
+        { x: 0.61, y: 0.22, w: 0.32, h: 0.18 }, { x: 0.61, y: 0.42, w: 0.32, h: 0.18 }, { x: 0.61, y: 0.62, w: 0.32, h: 0.18 }
+    ]}
 };
 
 const templateHoles = {
   "custom-barcode-moments": 3, "custom-batik": 3, "custom-blok": 3, "custom-cowgirl": 3,
   "custom-gantungan": 3, "custom-koran": 4, "custom-simple": 4,
-  "custom-baby-girl": 3, "custom-bingkai": 3, "custom-bingkai6": 5, "custom-camera": 3, 
-  "custom-camera2": 3, "custom-memory-book": 3, "custom-bingkai7": 5
+  "custom-baby-girl": 3, "custom-bingkai": 3, "custom-bingkai6": 6, "custom-camera": 3, 
+  "custom-camera2": 3, "custom-memory-book": 3, "custom-bingkai7": 7
 };
 
 function showPage(page) {
