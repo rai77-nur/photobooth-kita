@@ -446,18 +446,24 @@ function drawCustomPhotosAsync(context, width, height, customConfig) {
                 if (slot.shape === "ellipse") {
                     context.beginPath();
                     context.ellipse(slotX + slotW / 2, slotY + slotH / 2, slotW / 2, slotH / 2, 0, 0, Math.PI * 2);
-                    context.clip();
+                    context.clip(); 
                     drawImageCover(context, img, slotX, slotY, slotW, slotH);
                 } else if (slot.angle) {
                     const centerX = slotX + slotW / 2;
                     const centerY = slotY + slotH / 2;
                     context.translate(centerX, centerY);
                     context.rotate((slot.angle * Math.PI) / 180);
+                    
+                    // Potong batas luar biar ngga bablas saat dimiringkan
+                    context.beginPath();
+                    context.rect(-slotW / 2, -slotH / 2, slotW, slotH);
+                    context.clip();
+                    
                     drawImageCover(context, img, -slotW / 2, -slotH / 2, slotW, slotH);
                 } else {
                     context.beginPath();
                     context.rect(slotX, slotY, slotW, slotH);
-                    context.clip();
+                    context.clip(); 
                     drawImageCover(context, img, slotX, slotY, slotW, slotH);
                 }
                 context.restore();
