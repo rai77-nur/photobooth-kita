@@ -250,7 +250,7 @@ flashButton.addEventListener("click", async () => {
 });
 
 /* =====================================================
-   PEMOTRETAN
+   PEMOTRETAN (MODE MANUAL 1 PER 1)
 ===================================================== */
 captureButton.addEventListener("click", async () => {
     if (isCapturing) return;
@@ -258,43 +258,53 @@ captureButton.addEventListener("click", async () => {
         cameraMessage.textContent = "Kamera belum aktif.";
         return;
     }
+    
+    // Kunci tombol saat timer berjalan agar tidak error
     isCapturing = true;
     captureButton.disabled = true;
-    await captureAllPhotos();
-});
+    flipButton.style.opacity = "0.5"; // Indikator visual tombol flip mati sementara
 
-async function captureAllPhotos() {
-    capturedPhotos = [];
-    for (let i = 0; i < photoCount; i++) {
-        currentPhotoNumber.textContent = (i + 1).toString();
-        await countdown(countdownTime);
+    // Hitung mundur untuk 1 foto ini saja
+    await countdown(countdownTime);
 
-        if (flashEnabled && !torchSupported) {
-            flashElement.style.transition = "none";
-            flashElement.style.opacity = "1";
-            await wait(150);
-        }
-
-        const photo = captureFrame();
-        capturedPhotos.push(photo);
-        playShutterSound();
-
-        if (flashEnabled && !torchSupported) {
-            flashElement.style.transition = "opacity 0.2s ease";
-            flashElement.style.opacity = "0";
-        } else {
-            flashEffect();
-        }
-
-        if (i < photoCount - 1) await wait(1500);
+    if (flashEnabled && !torchSupported) {
+        flashElement.style.transition = "none";
+        flashElement.style.opacity = "1";
+        await wait(150);
     }
-    isCapturing = false;
-    captureButton.disabled = false;
-    
-    await createFinalCanvas();
-    stopCamera();
-    showPage(resultPage);
-}
+
+    // Eksekusi jepretan
+    const photo = captureFrame();
+    capturedPhotos.push(photo);
+    playShutterSound();
+
+    if (flashEnabled && !torchSupported) {
+        flashElement.style.transition = "opacity 0.2s ease";
+        flashElement.style.opacity = "0";
+    } else {
+        flashEffect();
+    }
+
+    // Cek apakah jumlah foto sudah memenuhi target (3, 4, atau 6)
+    if (capturedPhotos.length < photoCount) {
+        // Persiapan untuk jepretan BERIKUTNYA
+        currentPhotoNumber.textContent = (capturedPhotos.length + 1).toString();
+        
+        // Buka kembali kunci tombol agar user bisa mencet jepret lagi atau ganti kamera (flip)
+        isCapturing = false;
+        captureButton.disabled = false;
+        flipButton.style.opacity = "1";
+    } else {
+        // Jika target foto sudah tercapai, langsung render hasil
+        isCapturing = false;
+        captureButton.disabled = false;
+        flipButton.style.opacity = "1";
+        
+        await createFinalCanvas();
+        stopCamera();
+        showPage(resultPage);
+    }
+});
 
 function countdown(seconds) {
     return new Promise(resolve => {
