@@ -8,12 +8,10 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
   <nav class="navbar">
     <div class="logo">RAI <span>PHOTOBOOTH</span></div>
   </nav>
 
-  <!-- 1. HALAMAN LANDING -->
   <div id="landingPage" class="page active">
     <div class="hero">
       <div class="hero-content">
@@ -39,7 +37,6 @@
     </div>
   </div>
 
-  <!-- 2. HALAMAN SETUP -->
   <div id="setupPage" class="page">
     <div class="setup-container">
       <button id="setupBackButton" class="back-button">← Kembali</button>
@@ -78,12 +75,15 @@
 
       <div class="option-section">
         <h3>Jumlah Foto</h3>
-        <div class="photo-options">
+        <div class="photo-options" style="grid-template-columns: repeat(4, 1fr);">
           <button class="option-button photo-count selected" data-count="3">
             <strong>3</strong> <span>Foto</span>
           </button>
           <button class="option-button photo-count" data-count="4">
             <strong>4</strong> <span>Foto</span>
+          </button>
+          <button class="option-button photo-count" data-count="5">
+            <strong>5</strong> <span>Foto</span>
           </button>
           <button class="option-button photo-count" data-count="6">
             <strong>6</strong> <span>Foto</span>
@@ -103,7 +103,6 @@
           <button class="option-button filter-option" data-filter="monochrome">
             <strong>🖤</strong> <span>Monokrom</span>
           </button>
-          <!-- INI TOMBOL RETRO YANG KEMARIN ILANG -->
           <button class="option-button filter-option" data-filter="retro">
             <strong>🎞️</strong> <span>Retro</span>
           </button>
@@ -119,57 +118,40 @@
       <div class="option-section">
         <h3>Template Frame</h3>
         <div class="template-options">
-          <!-- Template Bawaan -->
           <button class="template-button selected" data-template="classic">
-            <div class="template-preview classic-preview">
-              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
-            </div>
+            <div class="template-preview classic-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
             <strong>Classic</strong>
           </button>
           <button class="template-button" data-template="minimal">
-            <div class="template-preview minimal-preview">
-              <i></i><i></i><i></i>
-            </div>
+            <div class="template-preview minimal-preview"><i></i><i></i><i></i></div>
             <strong>Minimal</strong>
           </button>
           <button class="template-button" data-template="retro">
-            <div class="template-preview retro-preview">
-              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
-            </div>
+            <div class="template-preview retro-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
             <strong>Retro</strong>
           </button>
           <button class="template-button" data-template="polaroid">
-            <div class="template-preview polaroid-preview">
-              <i></i>
-            </div>
+            <div class="template-preview polaroid-preview"><i></i></div>
             <strong>Polaroid</strong>
           </button>
           <button class="template-button" data-template="dark">
-            <div class="template-preview dark-preview">
-              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
-            </div>
+            <div class="template-preview dark-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
             <strong>Dark</strong>
           </button>
           <button class="template-button" data-template="blush">
-            <div class="template-preview blush-preview">
-              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
-            </div>
+            <div class="template-preview blush-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
             <strong>Blush</strong>
           </button>
           <button class="template-button" data-template="sky">
-            <div class="template-preview sky-preview">
-              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
-            </div>
+            <div class="template-preview sky-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
             <strong>Sky</strong>
           </button>
           <button class="template-button" data-template="sage">
-            <div class="template-preview sage-preview">
-              <i></i><i></i><i></i><span>RAI PHOTOBOOTH</span>
-            </div>
+            <div class="template-preview sage-preview"><i></i><i></i><i></i><span>RAI PHOTOBOOTH</span></div>
             <strong>Sage</strong>
           </button>
 
-          <!-- 7 Template Custom PNG -->
+          <!-- 14 Template Custom PNG (Lama + Baru) -->
           <button class="template-button" data-template="custom-barcode-moments">
             <div class="template-preview custom-preview" style="background-image: url('barcode-moments.png');"></div>
             <strong>Barcode</strong>
@@ -198,6 +180,36 @@
             <div class="template-preview custom-preview" style="background-image: url('simple.png');"></div>
             <strong>Simple</strong>
           </button>
+          
+          <!-- Bingkai Baru -->
+          <button class="template-button" data-template="custom-baby-girl">
+            <div class="template-preview custom-preview" style="background-image: url('baby-girl.png');"></div>
+            <strong>Baby Girl</strong>
+          </button>
+          <button class="template-button" data-template="custom-bingkai">
+            <div class="template-preview custom-preview" style="background-image: url('bingkai.png');"></div>
+            <strong>Stars Frame</strong>
+          </button>
+          <button class="template-button" data-template="custom-bingkai6">
+            <div class="template-preview custom-preview" style="background-image: url('bingkai6.png');"></div>
+            <strong>Scrapbook</strong>
+          </button>
+          <button class="template-button" data-template="custom-camera">
+            <div class="template-preview custom-preview" style="background-image: url('camera.png');"></div>
+            <strong>Camera Red</strong>
+          </button>
+          <button class="template-button" data-template="custom-camera2">
+            <div class="template-preview custom-preview" style="background-image: url('camera2.png');"></div>
+            <strong>Snoopy Cam</strong>
+          </button>
+          <button class="template-button" data-template="custom-memory-book">
+            <div class="template-preview custom-preview" style="background-image: url('memory-book.png');"></div>
+            <strong>Memory Book</strong>
+          </button>
+          <button class="template-button" data-template="custom-bingkai7">
+            <div class="template-preview custom-preview" style="background-image: url('bingkai7.png');"></div>
+            <strong>Ribbon Love</strong>
+          </button>
         </div>
       </div>
 
@@ -205,7 +217,6 @@
     </div>
   </div>
 
-  <!-- 3. HALAMAN KAMERA -->
   <div id="cameraPage" class="page">
     <div class="camera-container">
       <div class="camera-topbar">
@@ -237,7 +248,6 @@
     </div>
   </div>
 
-  <!-- 4. HALAMAN HASIL -->
   <div id="resultPage" class="page">
     <div class="result-container">
       <div class="result-header">
@@ -249,7 +259,6 @@
         <canvas id="resultCanvas"></canvas>
       </div>
 
-      <!-- FITUR GANTI GAYA FRAME -->
       <div class="result-template-selector">
         <h3>Ubah Gaya Frame:</h3>
         <div class="template-options result-templates">
@@ -314,6 +323,36 @@
             <div class="template-preview custom-preview" style="background-image: url('simple.png');"></div>
             <strong>Simple</strong>
           </button>
+          
+          <!-- Bingkai Baru -->
+          <button class="template-button" data-template="custom-baby-girl">
+            <div class="template-preview custom-preview" style="background-image: url('baby-girl.png');"></div>
+            <strong>Baby Girl</strong>
+          </button>
+          <button class="template-button" data-template="custom-bingkai">
+            <div class="template-preview custom-preview" style="background-image: url('bingkai.png');"></div>
+            <strong>Stars Frame</strong>
+          </button>
+          <button class="template-button" data-template="custom-bingkai6">
+            <div class="template-preview custom-preview" style="background-image: url('bingkai6.png');"></div>
+            <strong>Scrapbook</strong>
+          </button>
+          <button class="template-button" data-template="custom-camera">
+            <div class="template-preview custom-preview" style="background-image: url('camera.png');"></div>
+            <strong>Camera Red</strong>
+          </button>
+          <button class="template-button" data-template="custom-camera2">
+            <div class="template-preview custom-preview" style="background-image: url('camera2.png');"></div>
+            <strong>Snoopy Cam</strong>
+          </button>
+          <button class="template-button" data-template="custom-memory-book">
+            <div class="template-preview custom-preview" style="background-image: url('memory-book.png');"></div>
+            <strong>Memory Book</strong>
+          </button>
+          <button class="template-button" data-template="custom-bingkai7">
+            <div class="template-preview custom-preview" style="background-image: url('bingkai7.png');"></div>
+            <strong>Ribbon Love</strong>
+          </button>
         </div>
       </div>
 
@@ -325,7 +364,6 @@
     </div>
   </div>
 
-  <!-- ERROR MODAL -->
   <div id="errorModal" class="modal hidden">
     <div class="modal-content">
       <div class="modal-icon">!</div>
@@ -336,7 +374,6 @@
   </div>
 
   <audio id="shutterSound" src="https://www.soundjay.com/mechanical/sounds/camera-shutter-click-01.mp3" preload="auto"></audio>
-
   <script src="script.js"></script>
 </body>
 </html>

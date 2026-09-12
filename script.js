@@ -1,9 +1,5 @@
 // @ts-nocheck
 
-/* =====================================================
-   RAI PHOTOBOOTH - FULL ENGINE (FRAME CUSTOM, FILTER, LENSA)
-===================================================== */
-
 const landingPage = document.getElementById("landingPage");
 const setupPage = document.getElementById("setupPage");
 const cameraPage = document.getElementById("cameraPage");
@@ -46,9 +42,6 @@ let torchSupported = false;
 let selectedFilter = "none";
 let selectedLens = "normal";
 
-/* =====================================================
-   KONFIGURASI LUBANG FOTO SANGAT PRESISI UNTUK FRAME PNG
-===================================================== */
 const CUSTOM_TEMPLATES = {
     "custom-barcode-moments": { slots: [{ x: 0.307, y: 0.262, w: 0.393, h: 0.155, shape: "ellipse" }, { x: 0.311, y: 0.438, w: 0.390, h: 0.153, shape: "ellipse" }, { x: 0.317, y: 0.614, w: 0.385, h: 0.151, shape: "ellipse" }] },
     "custom-batik": { slots: [{ x: 0.405, y: 0.240, w: 0.530, h: 0.198, shape: "rect" }, { x: 0.405, y: 0.448, w: 0.530, h: 0.198, shape: "rect" }, { x: 0.405, y: 0.655, w: 0.530, h: 0.198, shape: "rect" }] },
@@ -56,17 +49,23 @@ const CUSTOM_TEMPLATES = {
     "custom-cowgirl": { slots: [{ x: 0.345, y: 0.320, w: 0.485, h: 0.182, shape: "rect" }, { x: 0.355, y: 0.520, w: 0.485, h: 0.182, shape: "rect" }, { x: 0.345, y: 0.725, w: 0.485, h: 0.182, shape: "rect" }] },
     "custom-gantungan": { slots: [{ x: 0.170, y: 0.238, w: 0.345, h: 0.192, shape: "rect" }, { x: 0.170, y: 0.442, w: 0.345, h: 0.192, shape: "rect" }, { x: 0.170, y: 0.647, w: 0.345, h: 0.192, shape: "rect" }] },
     "custom-koran": { slots: [{ x: 0.230, y: 0.015, w: 0.520, h: 0.220, shape: "rect" }, { x: 0.230, y: 0.248, w: 0.520, h: 0.220, shape: "rect" }, { x: 0.230, y: 0.485, w: 0.520, h: 0.220, shape: "rect" }, { x: 0.225, y: 0.730, w: 0.520, h: 0.220, shape: "rect" }] },
-    "custom-simple": { slots: [{ x: 0.375, y: 0.048, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.220, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.393, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.566, w: 0.290, h: 0.163, shape: "rect" }] }
+    "custom-simple": { slots: [{ x: 0.375, y: 0.048, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.220, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.393, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.566, w: 0.290, h: 0.163, shape: "rect" }] },
+    "custom-baby-girl": { slots: [{ x: 0.48, y: 0.28, w: 0.38, h: 0.18 }, { x: 0.48, y: 0.48, w: 0.38, h: 0.18 }, { x: 0.48, y: 0.68, w: 0.38, h: 0.18 }] },
+    "custom-bingkai": { slots: [{ x: 0.25, y: 0.18, w: 0.50, h: 0.20, angle: -5 }, { x: 0.25, y: 0.42, w: 0.50, h: 0.20, angle: 2 }, { x: 0.25, y: 0.66, w: 0.50, h: 0.20, angle: -3 }] },
+    "custom-bingkai6": { slots: [{ x: 0.05, y: 0.05, w: 0.35, h: 0.25, angle: -2 }, { x: 0.55, y: 0.05, w: 0.40, h: 0.25, angle: 2 }, { x: 0.25, y: 0.32, w: 0.45, h: 0.30 }, { x: 0.05, y: 0.70, w: 0.40, h: 0.25, angle: -5 }, { x: 0.55, y: 0.65, w: 0.40, h: 0.30, angle: 5 }] },
+    "custom-camera": { slots: [{ x: 0.18, y: 0.10, w: 0.65, h: 0.22 }, { x: 0.18, y: 0.38, w: 0.65, h: 0.22 }, { x: 0.18, y: 0.68, w: 0.65, h: 0.22 }] },
+    "custom-camera2": { slots: [{ x: 0.28, y: 0.30, w: 0.44, h: 0.18 }, { x: 0.28, y: 0.50, w: 0.44, h: 0.18 }, { x: 0.28, y: 0.70, w: 0.44, h: 0.18 }] },
+    "custom-memory-book": { slots: [{ x: 0.22, y: 0.08, w: 0.58, h: 0.24, angle: -12 }, { x: 0.20, y: 0.38, w: 0.58, h: 0.24, angle: 2 }, { x: 0.20, y: 0.68, w: 0.58, h: 0.24, angle: -10 }] },
+    "custom-bingkai7": { slots: [{ x: 0.05, y: 0.25, w: 0.40, h: 0.25, angle: -15 }, { x: 0.05, y: 0.70, w: 0.40, h: 0.25, angle: -15 }, { x: 0.60, y: 0.08, w: 0.32, h: 0.20 }, { x: 0.60, y: 0.32, w: 0.32, h: 0.20 }, { x: 0.60, y: 0.55, w: 0.32, h: 0.20 }] }
 };
 
 const templateHoles = {
   "custom-barcode-moments": 3, "custom-batik": 3, "custom-blok": 3, "custom-cowgirl": 3,
-  "custom-gantungan": 3, "custom-koran": 4, "custom-simple": 4
+  "custom-gantungan": 3, "custom-koran": 4, "custom-simple": 4,
+  "custom-baby-girl": 3, "custom-bingkai": 3, "custom-bingkai6": 5, "custom-camera": 3, 
+  "custom-camera2": 3, "custom-memory-book": 3, "custom-bingkai7": 5
 };
 
-/* =====================================================
-   NAVIGASI & PENYETELAN OPSI
-===================================================== */
 function showPage(page) {
     document.querySelectorAll(".page").forEach(item => item.classList.remove("active"));
     page.classList.add("active");
@@ -160,9 +159,6 @@ continueButton.addEventListener("click", async () => {
     await startCamera();
 });
 
-/* =====================================================
-   KAMERA & KONTROL
-===================================================== */
 async function startCamera() {
     try {
         stopCamera();
@@ -249,9 +245,6 @@ flashButton.addEventListener("click", async () => {
     torchSupported = await applyTorch(flashEnabled);
 });
 
-/* =====================================================
-   PEMOTRETAN (MODE MANUAL 1 PER 1)
-===================================================== */
 captureButton.addEventListener("click", async () => {
     if (isCapturing) return;
     if (!cameraStream) {
@@ -259,12 +252,10 @@ captureButton.addEventListener("click", async () => {
         return;
     }
     
-    // Kunci tombol saat timer berjalan agar tidak error
     isCapturing = true;
     captureButton.disabled = true;
-    flipButton.style.opacity = "0.5"; // Indikator visual tombol flip mati sementara
+    flipButton.style.opacity = "0.5"; 
 
-    // Hitung mundur untuk 1 foto ini saja
     await countdown(countdownTime);
 
     if (flashEnabled && !torchSupported) {
@@ -273,7 +264,6 @@ captureButton.addEventListener("click", async () => {
         await wait(150);
     }
 
-    // Eksekusi jepretan
     const photo = captureFrame();
     capturedPhotos.push(photo);
     playShutterSound();
@@ -285,17 +275,12 @@ captureButton.addEventListener("click", async () => {
         flashEffect();
     }
 
-    // Cek apakah jumlah foto sudah memenuhi target (3, 4, atau 6)
     if (capturedPhotos.length < photoCount) {
-        // Persiapan untuk jepretan BERIKUTNYA
         currentPhotoNumber.textContent = (capturedPhotos.length + 1).toString();
-        
-        // Buka kembali kunci tombol agar user bisa mencet jepret lagi atau ganti kamera (flip)
         isCapturing = false;
         captureButton.disabled = false;
         flipButton.style.opacity = "1";
     } else {
-        // Jika target foto sudah tercapai, langsung render hasil
         isCapturing = false;
         captureButton.disabled = false;
         flipButton.style.opacity = "1";
@@ -377,9 +362,6 @@ function wait(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
-/* =====================================================
-   RENDER CANVAS 4K & OVERLAY DENGAN FILTER TRANSPARANSI
-===================================================== */
 async function createFinalCanvas() {
     const canvas = resultCanvas;
     const context = canvas.getContext("2d");
@@ -608,9 +590,6 @@ function drawText(context, width, height, HD) {
     context.fillText(dateText.toUpperCase(), width / 2, height - (70 * HD));
 }
 
-/* =====================================================
-   AKSI AKHIR
-===================================================== */
 downloadButton.addEventListener("click", () => {
     resultCanvas.toBlob(blob => {
         const url = URL.createObjectURL(blob);
