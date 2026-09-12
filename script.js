@@ -38,6 +38,7 @@ let torchSupported = false;
 let selectedFilter = "none";
 let selectedLens = "normal";
 
+// KOORDINAT SUDAH DI-TWEAK BIAR NGGAK NABRAK
 const CUSTOM_TEMPLATES = {
     "custom-barcode-moments": { slots: [{ x: 0.307, y: 0.262, w: 0.393, h: 0.155, shape: "ellipse" }, { x: 0.311, y: 0.438, w: 0.390, h: 0.153, shape: "ellipse" }, { x: 0.317, y: 0.614, w: 0.385, h: 0.151, shape: "ellipse" }] },
     "custom-batik": { slots: [{ x: 0.405, y: 0.240, w: 0.530, h: 0.198, shape: "rect" }, { x: 0.405, y: 0.448, w: 0.530, h: 0.198, shape: "rect" }, { x: 0.405, y: 0.655, w: 0.530, h: 0.198, shape: "rect" }] },
@@ -48,18 +49,25 @@ const CUSTOM_TEMPLATES = {
     "custom-simple": { slots: [{ x: 0.375, y: 0.048, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.220, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.393, w: 0.290, h: 0.163, shape: "rect" }, { x: 0.375, y: 0.566, w: 0.290, h: 0.163, shape: "rect" }] },
     "custom-baby-girl": { slots: [{ x: 0.48, y: 0.28, w: 0.38, h: 0.18 }, { x: 0.48, y: 0.48, w: 0.38, h: 0.18 }, { x: 0.48, y: 0.68, w: 0.38, h: 0.18 }] },
     "custom-bingkai": { slots: [{ x: 0.25, y: 0.18, w: 0.50, h: 0.20, angle: -5 }, { x: 0.25, y: 0.42, w: 0.50, h: 0.20, angle: 2 }, { x: 0.25, y: 0.66, w: 0.50, h: 0.20, angle: -3 }] },
-    "custom-bingkai6": { slots: [ 
-        { x: 0.02, y: 0.02, w: 0.38, h: 0.22, angle: -3 }, { x: 0.53, y: 0.04, w: 0.43, h: 0.24, angle: 2 },
-        { x: -0.02, y: 0.48, w: 0.30, h: 0.22, angle: -3 }, { x: 0.23, y: 0.28, w: 0.48, h: 0.28, angle: 0 },
-        { x: 0.02, y: 0.72, w: 0.38, h: 0.23, angle: -4 }, { x: 0.50, y: 0.58, w: 0.45, h: 0.32, angle: 4 }
+    "custom-bingkai6": { slots: [ // Fix Scrapbook 
+        { x: 0.08, y: 0.15, w: 0.32, h: 0.22, angle: -5 },
+        { x: 0.51, y: 0.19, w: 0.37, h: 0.19, angle: 3 },
+        { x: 0.05, y: 0.46, w: 0.22, h: 0.15, angle: 0 },
+        { x: 0.29, y: 0.36, w: 0.38, h: 0.23, angle: 1 },
+        { x: 0.07, y: 0.63, w: 0.35, h: 0.17, angle: -3 },
+        { x: 0.52, y: 0.55, w: 0.36, h: 0.28, angle: 8 }
     ]},
     "custom-camera": { slots: [{ x: 0.18, y: 0.10, w: 0.65, h: 0.22 }, { x: 0.18, y: 0.38, w: 0.65, h: 0.22 }, { x: 0.18, y: 0.68, w: 0.65, h: 0.22 }] },
     "custom-camera2": { slots: [{ x: 0.28, y: 0.30, w: 0.44, h: 0.18 }, { x: 0.28, y: 0.50, w: 0.44, h: 0.18 }, { x: 0.28, y: 0.70, w: 0.44, h: 0.18 }] },
     "custom-memory-book": { slots: [{ x: 0.22, y: 0.08, w: 0.58, h: 0.24, angle: -12 }, { x: 0.20, y: 0.38, w: 0.58, h: 0.24, angle: 2 }, { x: 0.20, y: 0.68, w: 0.58, h: 0.24, angle: -10 }] },
-    "custom-bingkai7": { slots: [ 
-        { x: 0.05, y: 0.02, w: 0.40, h: 0.22, angle: -20 }, { x: 0.08, y: 0.35, w: 0.40, h: 0.22, angle: 20 },
-        { x: 0.05, y: 0.70, w: 0.40, h: 0.22, angle: -20 }, { x: 0.61, y: 0.02, w: 0.32, h: 0.18 },
-        { x: 0.61, y: 0.22, w: 0.32, h: 0.18 }, { x: 0.61, y: 0.42, w: 0.32, h: 0.18 }, { x: 0.61, y: 0.62, w: 0.32, h: 0.18 }
+    "custom-bingkai7": { slots: [ // Fix Ribbon Love
+        { x: 0.07, y: 0.13, w: 0.36, h: 0.18, angle: -14 },
+        { x: 0.10, y: 0.38, w: 0.36, h: 0.18, angle: 15 },
+        { x: 0.07, y: 0.62, w: 0.36, h: 0.18, angle: -15 },
+        { x: 0.62, y: 0.13, w: 0.28, h: 0.15 },
+        { x: 0.62, y: 0.30, w: 0.28, h: 0.15 },
+        { x: 0.62, y: 0.47, w: 0.28, h: 0.15 },
+        { x: 0.62, y: 0.64, w: 0.28, h: 0.15 }
     ]}
 };
 
@@ -474,10 +482,14 @@ function getTransparentFrameCanvas(frameImg, customConfig, canvasWidth, canvasHe
     const data = imgData.data;
 
     customConfig.slots.forEach(slot => {
-        const minX = Math.floor(slot.x * canvasWidth);
-        const minY = Math.floor(slot.y * canvasHeight);
-        const maxX = Math.ceil((slot.x + slot.w) * canvasWidth);
-        const maxY = Math.ceil((slot.y + slot.h) * canvasHeight);
+        // Melebarkan area hapus (scanning transparent) biar frame yang muter ujungnya tetep kehapus
+        const marginX = slot.angle ? (slot.h * 0.1) : 0; 
+        const marginY = slot.angle ? (slot.w * 0.1) : 0;
+        
+        const minX = Math.max(0, Math.floor((slot.x - marginX) * canvasWidth));
+        const minY = Math.max(0, Math.floor((slot.y - marginY) * canvasHeight));
+        const maxX = Math.min(canvasWidth, Math.ceil((slot.x + slot.w + marginX) * canvasWidth));
+        const maxY = Math.min(canvasHeight, Math.ceil((slot.y + slot.h + marginY) * canvasHeight));
 
         for (let y = minY; y < maxY; y++) {
             for (let x = minX; x < maxX; x++) {
