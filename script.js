@@ -57,7 +57,7 @@ const CUSTOM_TEMPLATES = {
         { x: 0.3142, y: 0.4384, w: 0.4152, h: 0.1575, angle: 1.97 },
         { x: 0.3196, y: 0.6697, w: 0.4178, h: 0.1587, angle: -7.23 }
     ]},
-    "custom-bingkai6": { slots: [
+    "custom-bingkai6": { frameInset: 0, slots: [
         { x: 0.0058, y: 0.0730, w: 0.3703, h: 0.2993, angle: -5.36 },
         { x: 0.5325, y: 0.1053, w: 0.3805, h: 0.2014, angle: -82.87 },
         { x: -0.0639, y: 0.5176, w: 0.3764, h: 0.1399, angle: -90.00 },
@@ -552,7 +552,13 @@ function getTransparentFrameCanvas(frameImg, customConfig, canvasWidth, canvasHe
     offCtx.globalCompositeOperation = "destination-out";
     offCtx.fillStyle = "#000000";
 
-    const INSET_RATIO = 0.035; // 3.5% inset di tiap sisi slot, bisa disetel per selera
+    // Default inset 3.5% buat template yang dekorasinya nyerempet ke pinggir slot
+    // (kamera, memory-book, dll). Tapi ada template yang slot-nya sengaja dibikin
+    // bersinggungan langsung (edge-to-edge), misalnya "custom-bingkai6" -> kalau
+    // dikasih inset juga, muncul celah aneh di sambungan antar foto. Makanya inset
+    // ini bisa di-override per template lewat field `frameInset` di CUSTOM_TEMPLATES.
+    const DEFAULT_INSET_RATIO = 0.035;
+    const INSET_RATIO = customConfig.frameInset ?? DEFAULT_INSET_RATIO;
 
     customConfig.slots.forEach(slot => {
         const slotX = slot.x * canvasWidth;
