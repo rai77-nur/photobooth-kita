@@ -545,8 +545,14 @@ function getTransparentFrameCanvas(frameImg, customConfig, canvasWidth, canvasHe
     // berdasar tebakan warna putih. Cara lama itu penyebab foto kepotong acak/ke-mix
     // dengan gambar background frame, karena area "putih" di frame belum tentu cuma
     // lubang foto (bisa kena border/elemen dekorasi lain yang kebetulan putih juga).
+    //
+    // FIX: lubang dibuat sedikit LEBIH KECIL (inset) dari area foto asli, supaya
+    // dekorasi frame (pita, bunga, washi tape, dll) yang nyerempet ke pinggir slot
+    // tetap kelihatan DI ATAS foto, bukan malah ikut kepotong dan ketutup foto.
     offCtx.globalCompositeOperation = "destination-out";
     offCtx.fillStyle = "#000000";
+
+    const INSET_RATIO = 0.035; // 3.5% inset di tiap sisi slot, bisa disetel per selera
 
     customConfig.slots.forEach(slot => {
         const slotX = slot.x * canvasWidth;
@@ -554,19 +560,25 @@ function getTransparentFrameCanvas(frameImg, customConfig, canvasWidth, canvasHe
         const slotW = slot.w * canvasWidth;
         const slotH = slot.h * canvasHeight;
 
+        // Ukuran lubang yang sudah di-inset, tapi pusatnya tetap sama dengan slot asli
+        const holeW = slotW * (1 - INSET_RATIO * 2);
+        const holeH = slotH * (1 - INSET_RATIO * 2);
+        const holeX = slotX + (slotW - holeW) / 2;
+        const holeY = slotY + (slotH - holeH) / 2;
+
         offCtx.save();
         if (slot.shape === "ellipse") {
             offCtx.beginPath();
-            offCtx.ellipse(slotX + slotW / 2, slotY + slotH / 2, slotW / 2, slotH / 2, 0, 0, Math.PI * 2);
+            offCtx.ellipse(holeX + holeW / 2, holeY + holeH / 2, holeW / 2, holeH / 2, 0, 0, Math.PI * 2);
             offCtx.fill();
         } else if (slot.angle) {
             const centerX = slotX + slotW / 2;
             const centerY = slotY + slotH / 2;
             offCtx.translate(centerX, centerY);
             offCtx.rotate((slot.angle * Math.PI) / 180);
-            offCtx.fillRect(-slotW / 2, -slotH / 2, slotW, slotH);
+            offCtx.fillRect(-holeW / 2, -holeH / 2, holeW, holeH);
         } else {
-            offCtx.fillRect(slotX, slotY, slotW, slotH);
+            offCtx.fillRect(holeX, holeY, holeW, holeH);
         }
         offCtx.restore();
     });
